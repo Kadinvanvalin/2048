@@ -12,8 +12,16 @@ function Cell (givenValue) {
   this.value = givenValue;
 }
 
+GameTwentyFortyEight.prototype.flatten = function() {
+  return _.flatten(this.grid)
+}
+
+GameTwentyFortyEight.prototype.toString = function() {
+  return this.flatten().map((cell)=>{return cell.value})
+};
+
 GameTwentyFortyEight.prototype.spawnBlock = function() {
-  grid.
+
 };
 
 GameTwentyFortyEight.prototype.setup = function(first_argument) {
