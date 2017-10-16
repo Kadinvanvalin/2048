@@ -1,33 +1,71 @@
 console.log("hey");
 
-function GameTwentyFortyEight() {
-  this.grid = [[new Cell(4), new Cell(2),new Cell(2),new Cell(0)],
-                [new Cell(0), new Cell(2),new Cell(2),new Cell(0)],
-                [new Cell(0), new Cell(2),new Cell(2),new Cell(2)],
-                [new Cell(0), new Cell(2),new Cell(0),new Cell(0)]];
-}
+// [[new Cell(4), new Cell(2),new Cell(2),new Cell(0)],
+//                 [new Cell(0), new Cell(2),new Cell(2),new Cell(0)],
+//                 [new Cell(0), new Cell(2),new Cell(2),new Cell(2)],
+//                 [new Cell(0), new Cell(2),new Cell(0),new Cell(0)]]
+
 
 function Cell (givenValue) {
   this.merged = false;
   this.value = givenValue;
 }
 
+function GameTwentyFortyEight(numberString) {
+  this.grid = numberString;
+}
+
+GameTwentyFortyEight.prototype.setup = function() {
+  this.setUpBoard(this.mapItOutSon());
+};
+
+GameTwentyFortyEight.prototype.oneFullMove = function() {
+  // user input
+  // AND THEN
+  var indexToChange = this.findAZero(this.flatten());
+  this.setUpBoard(indexToChange)
+
+}
+
+
+GameTwentyFortyEight.prototype.setUpBoard = function(cellArray){
+  var gameGrid = []
+  for (var i = 0; i < cellArray.length; i += 4) {
+    gameGrid.push(cellArray.slice(i, i+4));
+  };
+  this.grid = gameGrid;
+}
+
+GameTwentyFortyEight.prototype.mapItOutSon = function() {
+  var numArray = this.grid.split("");
+  var cellArray = numArray.map(function(number) {
+    return new Cell(parseInt(number));
+  });
+  return cellArray;
+};
+
+
+GameTwentyFortyEight.prototype.findAZero = function(cellArray) {
+  var zeroesArray = [];
+  cellArray.forEach(function(cell, index) {
+    if (cell.value === 0) zeroesArray.push(index)
+  });
+  var cellToChange = _.sample(zeroesArray)
+  cellArray[cellToChange].value = _.sample([2,4])
+  return cellArray
+}
+
 GameTwentyFortyEight.prototype.flatten = function() {
   return _.flatten(this.grid)
 }
 
-GameTwentyFortyEight.prototype.toString = function() {
-  return this.flatten().map((cell)=>{return cell.value})
-};
+// GameTwentyFortyEight.prototype.toString = function() {
+//   return this.flatten().map((cell)=>{return cell.value})
+// };
 
-GameTwentyFortyEight.prototype.spawnBlock = function() {
 
-};
+// User Input Logic:
 
-GameTwentyFortyEight.prototype.setup = function(first_argument) {
-  // body...
-  // makeSomeCells()
-};
 GameTwentyFortyEight.prototype.resetMerge = function(grid) {
   function resetArray(cell){
     cell.merged = false;
@@ -123,6 +161,6 @@ GameTwentyFortyEight.prototype.moveLeft = function(array) {
 
 
 
-var mygame = new GameTwentyFortyEight;
+var mygame = new GameTwentyFortyEight("0000202000000000");
 
 
