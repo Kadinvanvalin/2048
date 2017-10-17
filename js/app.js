@@ -22,11 +22,9 @@ GameTwentyFortyEight.prototype.setup = function() {
 GameTwentyFortyEight.prototype.oneFullMove = function() {
   // user input
   // AND THEN
-  var indexToChange = this.findAZero(this.flatten());
-  this.setUpBoard(indexToChange)
-
+  var cellArray = this.findAZero(this.flatten());
+  this.setUpBoard(cellArray);
 }
-
 
 GameTwentyFortyEight.prototype.setUpBoard = function(cellArray){
   var gameGrid = []
@@ -43,7 +41,6 @@ GameTwentyFortyEight.prototype.mapItOutSon = function() {
   });
   return cellArray;
 };
-
 
 GameTwentyFortyEight.prototype.findAZero = function(cellArray) {
   var zeroesArray = [];
@@ -94,6 +91,7 @@ GameTwentyFortyEight.prototype.offBoardLeft = function(array, zeroCheck) {
 };
 
 GameTwentyFortyEight.prototype.moveAllRight = function(grid) {
+  console.log(grid)
   grid.forEach((array)=>{
     this.moveRight(array);
   });
@@ -114,7 +112,6 @@ GameTwentyFortyEight.prototype.zeroCheckMoveRight = function(array, zeroCheck){
     }
     return zeroCheck;
 };
-
 
 GameTwentyFortyEight.prototype.moveRight = function(array) {
   for(var i = array.length - 2; i >= 0; i-- ){
@@ -159,8 +156,35 @@ GameTwentyFortyEight.prototype.moveLeft = function(array) {
   }
 };
 
+GameTwentyFortyEight.prototype.moveShitRight = function(){
+  this.moveAllRight(this.grid);
+  this.oneFullMove();
+  this.pretty();
+}
 
+GameTwentyFortyEight.prototype.moveShitLeft = function(){
+  this.moveAllLeft(this.grid);
+  this.oneFullMove();
+  this.pretty();
+}
+
+GameTwentyFortyEight.prototype.pretty = function(){
+  console.log(this.grid.map(function(row){ 
+    return row.map(function (cell){
+      return cell.value
+    })
+  })
+)}
 
 var mygame = new GameTwentyFortyEight("0000202000000000");
 
+Mousetrap.bind('up', mygame.moveUp.bind(mygame));
+
+Mousetrap.bind('down', mygame.moveDown.bind(mygame));
+
+Mousetrap.bind('right', mygame.moveShitRight.bind(mygame));
+
+Mousetrap.bind('left', mygame.moveShitLeft.bind(mygame));
+
+Mousetrap.bind('p', mygame.pretty.bind(mygame))
 
